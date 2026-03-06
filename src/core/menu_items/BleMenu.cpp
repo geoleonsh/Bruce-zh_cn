@@ -1,4 +1,5 @@
 #include "BleMenu.h"
+#include "core/i18n/zh_CN.h"
 #include "core/display.h"
 #include "core/mykeyboard.h"
 #include "core/utils.h"
@@ -12,7 +13,7 @@ void BleMenu::optionsMenu() {
     options.clear();
 
     if (BLEConnected) {
-        options.push_back({"Disconnect", [=]() {
+        options.push_back({tr("Disconnect"), [=]() {
 #if defined(CONFIG_IDF_TARGET_ESP32C5)
                                esp_bt_controller_deinit();
 #else
@@ -25,31 +26,31 @@ void BleMenu::optionsMenu() {
                            }});
     }
 
-    options.push_back({"Media Cmds", [=]() { MediaCommands(hid_ble, true); }});
+    options.push_back({tr("Media Cmds"), [=]() { MediaCommands(hid_ble, true); }});
 #if !defined(LITE_VERSION)
-    options.push_back({"Presenter", [=]() { PresenterMode(hid_ble, true); }});
-    options.push_back({"BLE Scan", ble_scan});
-    options.push_back({"iBeacon", [=]() { ibeacon(); }});
-    options.push_back({"Bad BLE", [=]() { ducky_setup(hid_ble, true); }});
-    options.push_back({"BLE Keyboard", [=]() { ducky_keyboard(hid_ble, true); }});
+    options.push_back({tr("Presenter"), [=]() { PresenterMode(hid_ble, true); }});
+    options.push_back({tr("BLE Scan"), ble_scan});
+    options.push_back({tr("iBeacon"), [=]() { ibeacon(); }});
+    options.push_back({tr("Bad BLE"), [=]() { ducky_setup(hid_ble, true); }});
+    options.push_back({tr("BLE Keyboard"), [=]() { ducky_keyboard(hid_ble, true); }});
 #endif
-    options.push_back({"BLE Spam", [=]() { spamMenu(); }});
+    options.push_back({tr("BLE Spam"), [=]() { spamMenu(); }});
 #if !defined(LITE_VERSION)
-    options.push_back({"Ninebot", [=]() { BLENinebot(); }});
+    options.push_back({tr("Ninebot"), [=]() { BLENinebot(); }});
 #endif
-    options.push_back({"Config", [this]() { configMenu(); }});
+    options.push_back({tr("Config"), [this]() { configMenu(); }});
     addOptionToMainMenu();
 
-    loopOptions(options, MENU_TYPE_SUBMENU, "Bluetooth");
+    loopOptions(options, MENU_TYPE_SUBMENU, tr("Bluetooth"));
 }
 
 void BleMenu::configMenu() {
     options = {
-        {"BLE Name", [this]() { setBleNameMenu(); }},
-        {"Back",     [this]() { optionsMenu(); }   },
+        {tr("BLE Name"), [this]() { setBleNameMenu(); }},
+        {tr("Back"),     [this]() { optionsMenu(); }   },
     };
 
-    loopOptions(options, MENU_TYPE_SUBMENU, "BLE Config");
+    loopOptions(options, MENU_TYPE_SUBMENU, tr("BLE Config"));
 }
 
 void BleMenu::drawIcon(float scale) {
@@ -153,13 +154,13 @@ void BleMenu::setBleNameMenu() {
     const bool isDefault = bruceConfigPins.bleName == defaultBleName;
 
     options = {
-        {"Default", [=]() { bruceConfigPins.setBleName(defaultBleName); }, isDefault },
-        {"Custom",
+        {tr("Default"), [=]() { bruceConfigPins.setBleName(defaultBleName); }, isDefault },
+        {tr("Custom"),
          [=]() {
              String newBleName = keyboard(bruceConfigPins.bleName, 30, "BLE Device Name:");
              if (newBleName != "\x1B") {
                  if (!newBleName.isEmpty()) bruceConfigPins.setBleName(newBleName);
-                 else displayError("BLE Name cannot be empty", true);
+                 else displayError(tr("BLE Name cannot be empty"), true);
              }
          },                                                                !isDefault},
     };

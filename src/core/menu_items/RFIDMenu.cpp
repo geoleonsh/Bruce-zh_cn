@@ -1,4 +1,5 @@
 #include "RFIDMenu.h"
+#include "core/i18n/zh_CN.h"
 #include "core/display.h"
 #include "core/settings.h"
 #include "core/utils.h"
@@ -16,34 +17,34 @@
 void RFIDMenu::optionsMenu() {
     options = {
 #if !defined(REMOVE_RFID_HW_INTERFACE)  // Remove Hardware interface menu due to lack of external GPIO
-        {"Read tag",    [=]() { TagOMatic(); }                          },
+        {tr("Read tag"),    [=]() { TagOMatic(); }                          },
 #ifndef LITE_VERSION
-        {"Read EMV",    [=]() { EMVReader(); }                          },
-        {"Read 125kHz", [=]() { RFID125(); }                            },
+        {tr("Read EMV"),    [=]() { EMVReader(); }                          },
+        {tr("Read 125kHz"), [=]() { RFID125(); }                            },
 #endif
-        {"Scan tags",   [=]() { TagOMatic(TagOMatic::SCAN_MODE); }      },
-        {"Load file",   [=]() { TagOMatic(TagOMatic::LOAD_MODE); }      },
-        {"Erase data",  [=]() { TagOMatic(TagOMatic::ERASE_MODE); }     },
-        {"Write NDEF",  [=]() { TagOMatic(TagOMatic::WRITE_NDEF_MODE); }},
+        {tr("Scan tags"),   [=]() { TagOMatic(TagOMatic::SCAN_MODE); }      },
+        {tr("Load file"),   [=]() { TagOMatic(TagOMatic::LOAD_MODE); }      },
+        {tr("Erase data"),  [=]() { TagOMatic(TagOMatic::ERASE_MODE); }     },
+        {tr("Write NDEF"),  [=]() { TagOMatic(TagOMatic::WRITE_NDEF_MODE); }},
 #endif
 #ifndef LITE_VERSION
-        {"Amiibolink",  [=]() { Amiibo(); }                             },
+        {tr("Amiibolink"),  [=]() { Amiibo(); }                             },
 #endif
-        {"Chameleon",   [=]() { Chameleon(); }                          },
+        {tr("Chameleon"),   [=]() { Chameleon(); }                          },
 #ifndef LITE_VERSION
-        {"PN532 BLE",   [=]() { Pn532ble(); }                           },
+        {tr("PN532 BLE"),   [=]() { Pn532ble(); }                           },
 #if !defined(REMOVE_RFID_HW_INTERFACE)  // Remove Hardware interface menu due to lack of external GPIO
-        {"PN532 UART",  [=]() { PN532KillerTools(); }                   },
+        {tr("PN532 UART"),  [=]() { PN532KillerTools(); }                   },
 #endif
 #endif
-        {"Config",      [this]() { configMenu(); }                      },
+        {tr("Config"),      [this]() { configMenu(); }                      },
     };
 
 #if !defined(REMOVE_RFID_HW_INTERFACE)
 #ifndef LITE_VERSION
     if (bruceConfigPins.rfidModule == PN532_I2C_MODULE) {
         // Added SRIX Menu only if PN is set to i2c mode
-        options.insert(options.begin() + 3, {"SRIX Tool", [=]() { PN532_SRIX(); }});
+        options.insert(options.begin() + 3, {tr("SRIX Tool"), [=]() { PN532_SRIX(); }});
     }
 #endif
 #endif
@@ -68,13 +69,13 @@ void RFIDMenu::optionsMenu() {
 void RFIDMenu::configMenu() {
     options = {
 #if !defined(REMOVE_RFID_HW_INTERFACE)  // Remove Hardware interface menu due to lack of external GPIO
-        {"RFID Module", setRFIDModuleMenu          },
+        {tr("RFID Module"), setRFIDModuleMenu          },
 #endif
-        {"Add MIF Key", addMifareKeyMenu           },
-        {"Back",        [this]() { optionsMenu(); }},
+        {tr("Add MIF Key"), addMifareKeyMenu           },
+        {tr("Back"),        [this]() { optionsMenu(); }},
     };
 
-    loopOptions(options, MENU_TYPE_SUBMENU, "RFID Config");
+    loopOptions(options, MENU_TYPE_SUBMENU, tr("RFID Config"));
 }
 
 void RFIDMenu::drawIcon(float scale) {

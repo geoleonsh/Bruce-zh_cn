@@ -1,4 +1,5 @@
 #include "OthersMenu.h"
+#include "core/i18n/zh_CN.h"
 
 #include "core/display.h"
 #include "core/utils.h"
@@ -13,56 +14,56 @@
 
 void OthersMenu::optionsMenu() {
     options = {
-        {"QRCodes",      qrcode_menu                  },
-        {"Megalodon",    shark_setup                  },
+        {tr("QRCodes"),      qrcode_menu                  },
+        {tr("Megalodon"),    shark_setup                  },
 
 #if defined(MIC_SPM1423) || defined(MIC_INMP441)
-        {"Microphone",   [this]() { micMenu(); }      }, //@deveclipse
+        {tr("Microphone"),   [this]() { micMenu(); }      }, //@deveclipse
 #endif
 
 // New consolidated BadUSB & HID submenu
 #if !defined(LITE_VERSION) || defined(USB_as_HID)
-        {"BadUSB & HID", [this]() { badUsbHidMenu(); }},
+        {tr("BadUSB & HID"), [this]() { badUsbHidMenu(); }},
 #endif
 
 #ifndef LITE_VERSION
-        {"iButton",      setup_ibutton                },
+        {tr("iButton"),      setup_ibutton                },
 #endif
 
         // Timer removed - moved to another "Clock"
     };
 
     addOptionToMainMenu();
-    loopOptions(options, MENU_TYPE_SUBMENU, "Others");
+    loopOptions(options, MENU_TYPE_SUBMENU, tr("Others"));
 }
 
 void OthersMenu::badUsbHidMenu() {
     options = {
 #ifndef LITE_VERSION
-        {"BadUSB",       [=]() { ducky_setup(hid_usb, false); }   },
-        {"USB Keyboard", [=]() { ducky_keyboard(hid_usb, false); }},
+        {tr("BadUSB"),       [=]() { ducky_setup(hid_usb, false); }   },
+        {tr("USB Keyboard"), [=]() { ducky_keyboard(hid_usb, false); }},
 #endif
 
 #ifdef USB_as_HID
-        {"USB Clicker",  clicker_setup                            },
+        {tr("USB Clicker"),  clicker_setup                            },
 #endif
 
-        {"Back",         [this]() { optionsMenu(); }              },
+        {tr("Back"),         [this]() { optionsMenu(); }              },
     };
 
-    loopOptions(options, MENU_TYPE_SUBMENU, "BadUSB & HID");
+    loopOptions(options, MENU_TYPE_SUBMENU, tr("BadUSB & HID"));
 }
 
 void OthersMenu::micMenu() {
     options = {
 #if defined(MIC_SPM1423) || defined(MIC_INMP441)
-        {"Spectrum", mic_test                   },
-        {"Record",   mic_record_app             },
+        {tr("Spectrum"), mic_test                   },
+        {tr("Record"),   mic_record_app             },
 #endif
-        {"Back",     [this]() { optionsMenu(); }},
+        {tr("Back"),     [this]() { optionsMenu(); }},
     };
 
-    loopOptions(options, MENU_TYPE_SUBMENU, "Microphone");
+    loopOptions(options, MENU_TYPE_SUBMENU, tr("Microphone"));
 }
 
 void OthersMenu::drawIcon(float scale) {

@@ -2,6 +2,7 @@
 #define __Ethernet_MENU_H__
 
 #include "modules/ethernet/EthernetHelper.h"
+#include "core/i18n/zh_CN.h"
 #include <MenuItemInterface.h>
 #if !defined(LITE_VERSION)
 class EthernetMenu : public MenuItemInterface {
@@ -10,7 +11,7 @@ private:
     void start_ethernet();
 
 public:
-    EthernetMenu() : MenuItemInterface("Ethernet") {}
+    EthernetMenu() : MenuItemInterface("以太网") {}
 
     void optionsMenu(void);
     void drawIcon(float scale);

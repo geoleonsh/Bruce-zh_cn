@@ -1,4 +1,5 @@
 #include "display.h"
+#include "core/i18n/zh_CN.h"
 #include "core/wifi/webInterface.h" // for server
 #include "core/wifi/wg.h"           //for isConnectedWireguard to print wireguard lock
 #include "mykeyboard.h"
@@ -68,9 +69,9 @@ void TouchFooter(uint16_t color) {
     tft.drawRoundRect(5, tftHeight + 2, tftWidth - 10, 43, 5, color);
     tft.setTextColor(color);
     tft.setTextSize(FM);
-    tft.drawCentreString("PREV", tftWidth / 6, tftHeight + 4, 1);
-    tft.drawCentreString("SEL", tftWidth / 2, tftHeight + 4, 1);
-    tft.drawCentreString("NEXT", 5 * tftWidth / 6, tftHeight + 4, 1);
+    tft.drawCentreString(tr("PREV"), tftWidth / 6, tftHeight + 4, 1);
+    tft.drawCentreString(tr("SEL"), tftWidth / 2, tftHeight + 4, 1);
+    tft.drawCentreString(tr("NEXT"), 5 * tftWidth / 6, tftHeight + 4, 1);
 }
 /***************************************************************************************
 ** Function name: TouchFooter
@@ -80,9 +81,9 @@ void MegaFooter(uint16_t color) {
     tft.drawRoundRect(5, tftHeight + 2, tftWidth - 10, 43, 5, color);
     tft.setTextColor(color);
     tft.setTextSize(FM);
-    tft.drawCentreString("Exit", tftWidth / 6, tftHeight + 4, 1);
-    tft.drawCentreString("UP", tftWidth / 2, tftHeight + 4, 1);
-    tft.drawCentreString("DOWN", 5 * tftWidth / 6, tftHeight + 4, 1);
+    tft.drawCentreString(tr("Exit"), tftWidth / 6, tftHeight + 4, 1);
+    tft.drawCentreString(tr("UP"), tftWidth / 2, tftHeight + 4, 1);
+    tft.drawCentreString(tr("DOWN"), 5 * tftWidth / 6, tftHeight + 4, 1);
 }
 
 /***************************************************************************************
@@ -266,7 +267,7 @@ int8_t displayMessage(
 void displayError(String txt, bool waitKeyPress) {
     displayRedStripe(txt);
 #ifndef HAS_SCREEN
-    Serial.println("ERR: " + txt);
+    Serial.println(tr("ERR: ") + txt);
     return;
 #endif
     delay(200);
@@ -276,7 +277,7 @@ void displayError(String txt, bool waitKeyPress) {
 void displayWarning(String txt, bool waitKeyPress) {
     displayRedStripe(txt, TFT_BLACK, TFT_YELLOW);
 #ifndef HAS_SCREEN
-    Serial.println("WARN: " + txt);
+    Serial.println(tr("WARN: ") + txt);
     return;
 #endif
     delay(200);
@@ -287,7 +288,7 @@ void displayInfo(String txt, bool waitKeyPress) {
     // todo: add newlines to txt if too long
     displayRedStripe(txt, TFT_WHITE, TFT_BLUE);
 #ifndef HAS_SCREEN
-    Serial.println("INFO: " + txt);
+    Serial.println(tr("INFO: ") + txt);
     return;
 #endif
 
@@ -299,7 +300,7 @@ void displaySuccess(String txt, bool waitKeyPress) {
     // todo: add newlines to txt if too long
     displayRedStripe(txt, TFT_WHITE, TFT_DARKGREEN);
 #ifndef HAS_SCREEN
-    Serial.println("SUCCESS: " + txt);
+    Serial.println(tr("SUCCESS: ") + txt);
     return;
 #endif
     delay(200);
@@ -310,7 +311,7 @@ void displayTextLine(String txt, bool waitKeyPress) {
     // todo: add newlines to txt if too long
     displayRedStripe(txt, getComplementaryColor2(bruceConfig.priColor), bruceConfig.priColor);
 #ifndef HAS_SCREEN
-    Serial.println("MESSAGE: " + txt);
+    Serial.println(tr("MESSAGE: ") + txt);
     return;
 #endif
     delay(200);
@@ -494,7 +495,7 @@ int loopOptions(
             checkReboot();
             if (devModeCounter >= 5 && !bruceConfig.devMode) {
                 bruceConfig.setDevMode(true);
-                displayInfo("Dev Mode Enabled", true);
+                displayInfo(tr("Dev Mode Enabled"), true);
             }
             if (millis() - _clock_bat_timer > 30000) {
                 _clock_bat_timer = millis();
@@ -608,9 +609,9 @@ int loopOptions(
             if (forceMenuOption >= 0) {
                 chosen = forceMenuOption;
                 forceMenuOption = -1; // reset SerialCommand navigation option
-                Serial.print("Forcely ");
+                Serial.print(tr("Forcely "));
             }
-            Serial.println("Selected: " + String(options[chosen].label));
+            Serial.println(tr("Selected: ") + String(options[chosen].label));
             options[chosen].operation();
             break;
         }
@@ -727,7 +728,7 @@ void drawSubmenu(int index, std::vector<Option> &options, const char *title) {
 
     tft.setTextSize(FM);
 #if defined(HAS_TOUCH)
-    tft.drawCentreString("/\\", tftWidth / 2, middle_up - (FM * LH + 6), 1);
+    tft.drawCentreString(tr("/\\"), tftWidth / 2, middle_up - (FM * LH + 6), 1);
 #endif
     // Previous item
     const char *firstOption =
@@ -760,9 +761,9 @@ void drawSubmenu(int index, std::vector<Option> &options, const char *title) {
     tft.fillRect(tftWidth - 5, index * tftHeight / menuSize, 5, tftHeight / menuSize, bruceConfig.priColor);
 
 #if defined(HAS_TOUCH)
-    tft.drawCentreString("\\/", tftWidth / 2, middle_down + (FM * LH + 6), 1);
+    tft.drawCentreString(tr("\\/"), tftWidth / 2, middle_down + (FM * LH + 6), 1);
     tft.setTextColor(getColorVariation(bruceConfig.priColor), bruceConfig.bgColor);
-    tft.drawString("[ x ]", 7, 7, 1);
+    tft.drawString(tr("[ x ]"), 7, 7, 1);
     TouchFooter();
 #endif
 }
@@ -777,7 +778,7 @@ void drawStatusBar() {
     if (sdcardMounted) {
         tft.setTextColor(bruceConfig.priColor, bruceConfig.bgColor);
         tft.setTextSize(FP);
-        tft.drawString("SD", tftWidth - (bat_margin), 12);
+        tft.drawString(tr("SD"), tftWidth - (bat_margin), 12);
         i++;
     } // Indication for SD card on screen
     if (gpsConnected) {
@@ -818,7 +819,7 @@ void drawStatusBar() {
         tft.print(timeStr);
     } else {
         setTftDisplay(12, 12, bruceConfig.priColor, 1, bruceConfig.bgColor);
-        tft.print("BRUCE " + String(BRUCE_VERSION));
+        tft.print(tr("BRUCE ") + String(BRUCE_VERSION));
     }
 }
 
@@ -830,7 +831,7 @@ void drawMainBorder(bool clear) {
     setTftDisplay(12, 12, bruceConfig.priColor, 1, bruceConfig.bgColor);
     tft.setTextDatum(0);
 
-    // if(wifiConnected) {tft.print(timeStr);} else {tft.print("BRUCE 1.0b");}
+    // if(wifiConnected) {tft.print(timeStr);} else {tft.print(tr("BRUCE 1.0b"));}
 
     drawStatusBar();
 
@@ -1181,13 +1182,13 @@ bool showJpeg(FS &fs, String filename, int x, int y, bool center) {
 
         // print array on Serial
         /*
-        Serial.print("0x");
+        Serial.print(tr("0x"));
         if (abs(data) < 16) {
-          Serial.print("0");
+          Serial.print(tr("0"));
         }
 
         Serial.print(data, HEX);
-        Serial.print(","); // Add value and comma
+        Serial.print(tr(",")); // Add value and comma
         line_len++;
         if (line_len >= 32) {
           line_len = 0;
@@ -1219,10 +1220,10 @@ bool showJpeg(FS &fs, String filename, int x, int y, bool center) {
     drawTime = millis() - drawTime; // Calculate the time it took
 
     // print the results to the serial port
-    Serial.print("Total render time was    : ");
+    Serial.print(tr("Total render time was    : "));
     Serial.print(drawTime);
-    Serial.println(" ms");
-    Serial.println("=====================================");
+    Serial.println(tr(" ms"));
+    Serial.println(tr("====================================="));
 
     delete[] data_array; // free heap before leaving
     return true;
@@ -1553,7 +1554,7 @@ bool drawBmp(FS &fs, String filename, int x, int y, bool center) {
     bmpFS = fs.open(filename, "r");
 
     if (!bmpFS) {
-        Serial.print("File not found");
+        Serial.print(tr("File not found"));
         goto ERROR;
     }
 
@@ -1604,15 +1605,15 @@ bool drawBmp(FS &fs, String filename, int x, int y, bool center) {
                 tft.pushImage(x, y--, w, 1, (uint16_t *)lineBuffer);
             }
             tft.setSwapBytes(oldSwapBytes);
-            Serial.print("BMP Loaded in ");
+            Serial.print(tr("BMP Loaded in "));
             Serial.print(millis() - startTime);
-            Serial.println(" ms");
+            Serial.println(tr(" ms"));
         } else {
             goto ERROR;
         }
     } else {
     ERROR:
-        Serial.println("BMP format not recognized.");
+        Serial.println(tr("BMP format not recognized."));
         bmpFS.close();
         return false;
     }
@@ -1789,7 +1790,7 @@ bool drawPNG(FS &fs, String filename, int x, int y, bool center) {
 #endif
 
     if (!mem) {
-        Serial.println("Fail alloc PNG!");
+        Serial.println(tr("Fail alloc PNG!"));
         bruceConfig.theme.label = true;
         return false;
     }
@@ -1818,7 +1819,7 @@ bool drawPNG(FS &fs, String filename, int x, int y, bool center) {
         }
 
         if (png->getWidth() > MAX_IMAGE_WIDTH) {
-            Serial.println("Image too wide for allocated line buffer size!");
+            Serial.println(tr("Image too wide for allocated line buffer size!"));
         } else {
             rc = png->decode(NULL, 0);
             png->close();
@@ -1833,9 +1834,9 @@ bool drawPNG(FS &fs, String filename, int x, int y, bool center) {
         if (rc != PNG_SUCCESS && fs.exists(binPath)) { fs.remove(binPath); }
 
         // How long did rendering take...
-        Serial.print("PNG Loaded in ");
+        Serial.print(tr("PNG Loaded in "));
         Serial.print(millis() - dt);
-        Serial.println("ms");
+        Serial.println(tr("ms"));
     } else {
         // Decode/open failed, ensure no stale cache
         if (fs.exists(binPath)) fs.remove(binPath);

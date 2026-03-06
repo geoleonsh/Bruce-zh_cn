@@ -1,4 +1,5 @@
 #include "NRF24.h"
+#include "core/i18n/zh_CN.h"
 #include "core/display.h"
 #include "core/utils.h"
 #include "modules/NRF24/nrf_common.h"
@@ -7,29 +8,29 @@
 
 void NRF24Menu::optionsMenu() {
     options.clear();
-    options.push_back({"Information", nrf_info});
+    options.push_back({tr("Information"), nrf_info});
 
     if (bruceConfigPins.NRF24_bus.mosi == bruceConfigPins.SDCARD_bus.mosi &&
         bruceConfigPins.NRF24_bus.mosi != GPIO_NUM_NC)
-        options.push_back({"Spectrum", [=]() { nrf_spectrum(&sdcardSPI); }});
+        options.push_back({tr("Spectrum"), [=]() { nrf_spectrum(&sdcardSPI); }});
 #if TFT_MOSI > 0 // Display doesn't use SPI bus
     else if (bruceConfigPins.NRF24_bus.mosi == (gpio_num_t)TFT_MOSI)
-        options.push_back({"Spectrum", [=]() { nrf_spectrum(&tft.getSPIinstance()); }});
+        options.push_back({tr("Spectrum"), [=]() { nrf_spectrum(&tft.getSPIinstance()); }});
 #endif
-    else options.push_back({"Spectrum", [=]() { nrf_spectrum(&SPI); }});
+    else options.push_back({tr("Spectrum"), [=]() { nrf_spectrum(&SPI); }});
 
-    options.push_back({"NRF Jammer", nrf_jammer});
+    options.push_back({tr("NRF Jammer"), nrf_jammer});
 
-    options.push_back({"CH Jammer", nrf_channel_jammer});
-    options.push_back({"CH hopper", nrf_channel_hopper});
+    options.push_back({tr("CH Jammer"), nrf_channel_jammer});
+    options.push_back({tr("CH hopper"), nrf_channel_hopper});
 
 #if defined(ARDUINO_M5STICK_C_PLUS) || defined(ARDUINO_M5STICK_C_PLUS2)
-    options.push_back({"Config pins", [this]() { configMenu(); }});
+    options.push_back({tr("Config pins"), [this]() { configMenu(); }});
 #endif
 
     addOptionToMainMenu();
 
-    loopOptions(options, MENU_TYPE_SUBMENU, "NRF24");
+    loopOptions(options, MENU_TYPE_SUBMENU, tr("NRF24"));
 }
 
 void NRF24Menu::configMenu() {
@@ -37,12 +38,12 @@ void NRF24Menu::configMenu() {
     int idx = 0;
     if (bruceConfigPins.NRF24_bus.mosi == (gpio_num_t)SDCARD_MOSI) idx = 1;
     options = {
-        {"NRF24 (legacy)",     [&]() { opt = 1; }         },
-        {"NRF24 (shared SPI)", [&]() { opt = 2; }         },
-        {"Back",               [this]() { optionsMenu(); }},
+        {tr("NRF24 (legacy)"),     [&]() { opt = 1; }         },
+        {tr("NRF24 (shared SPI)"), [&]() { opt = 2; }         },
+        {tr("Back"),               [this]() { optionsMenu(); }},
     };
 
-    loopOptions(options, MENU_TYPE_SUBMENU, "RF Config", idx);
+    loopOptions(options, MENU_TYPE_SUBMENU, tr("RF Config"), idx);
     if (opt == 1) {
         bruceConfigPins.setNrf24Pins(
             {(gpio_num_t)NRF24_SCK_PIN,

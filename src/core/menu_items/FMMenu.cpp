@@ -1,4 +1,5 @@
 #include "FMMenu.h"
+#include "core/i18n/zh_CN.h"
 #include "core/display.h"
 #include "core/utils.h"
 #include "modules/fm/fm.h"
@@ -7,16 +8,16 @@ void FMMenu::optionsMenu() {
     options = {
 #if !defined(LITE_VERSION) and defined(FM_SI4713)
         // #if defined(FM_SI4713)
-        {"Brdcast std", lambdaHelper(fm_live_run, false)},
-        {"Brdcast rsvd", lambdaHelper(fm_live_run, true)},
-        {"Brdcast stop", fm_stop},
-        {"FM Spectrum", fm_spectrum},
-        {"Hijack TA", fm_ta_run},
+        {tr("Brdcast std"), lambdaHelper(fm_live_run, false)},
+        {tr("Brdcast rsvd"), lambdaHelper(fm_live_run, true)},
+        {tr("Brdcast stop"), fm_stop},
+        {tr("FM Spectrum"), fm_spectrum},
+        {tr("Hijack TA"), fm_ta_run},
 #endif
     };
     addOptionToMainMenu();
 
-    loopOptions(options, MENU_TYPE_SUBMENU, "FM");
+    loopOptions(options, MENU_TYPE_SUBMENU, tr("FM"));
 }
 
 void FMMenu::drawIcon(float scale) {

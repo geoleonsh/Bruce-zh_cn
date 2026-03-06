@@ -2,10 +2,11 @@
 #define __BLE_MENU_H__
 
 #include <MenuItemInterface.h>
+#include "core/i18n/zh_CN.h"
 
 class BleMenu : public MenuItemInterface {
 public:
-    BleMenu() : MenuItemInterface("BLE") {}
+    BleMenu() : MenuItemInterface("蓝牙") {}
 
     void optionsMenu(void);
     void drawIcon(float scale);

@@ -2,10 +2,11 @@
 #define __FM_MENU_H__
 
 #include <MenuItemInterface.h>
+#include "core/i18n/zh_CN.h"
 
 class FMMenu : public MenuItemInterface {
 public:
-    FMMenu() : MenuItemInterface("FM") {}
+    FMMenu() : MenuItemInterface("调频") {}
 
     void optionsMenu(void);
     void drawIcon(float scale);

@@ -7,6 +7,7 @@
  */
 
 #include "startup_app.h"
+#include "core/i18n/zh_CN.h"
 
 #include "core/menu_items/ScriptsMenu.h"
 #include "core/settings.h" // clock
@@ -51,7 +52,7 @@ StartupApp::StartupApp() {
 bool StartupApp::startApp(const String &appName) const {
     auto it = _startupApps.find(appName);
     if (it == _startupApps.end()) {
-        Serial.println("Invalid startup app: " + appName);
+        Serial.println(tr("Invalid startup app: ") + appName);
         return false;
     }
 

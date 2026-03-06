@@ -1,4 +1,5 @@
 #include "ConfigMenu.h"
+#include "core/i18n/zh_CN.h"
 #include "core/display.h"
 #include "core/i2c_finder.h"
 #include "core/main_menu.h"
@@ -23,28 +24,28 @@ void ConfigMenu::optionsMenu() {
         }
 
         std::vector<Option> localOptions = {
-            {"Display & UI",  [this]() { displayUIMenu(); }},
+            {tr("Display & UI"),  [this]() { displayUIMenu(); }},
 #ifdef HAS_RGB_LED
-            {"LED Config",    [this]() { ledMenu(); }      },
+            {tr("LED Config"),    [this]() { ledMenu(); }      },
 #endif
-            {"Audio Config",  [this]() { audioMenu(); }    },
-            {"System Config", [this]() { systemMenu(); }   },
-            {"Power",         [this]() { powerMenu(); }    },
+            {tr("Audio Config"),  [this]() { audioMenu(); }    },
+            {tr("System Config"), [this]() { systemMenu(); }   },
+            {tr("Power"),         [this]() { powerMenu(); }    },
         };
 #if !defined(LITE_VERSION)
         if (!appStoreInstalled()) {
-            localOptions.push_back({"Install App Store", []() { installAppStoreJS(); }});
+            localOptions.push_back({tr("Install App Store"), []() { installAppStoreJS(); }});
         }
 #endif
 
         if (bruceConfig.devMode) {
-            localOptions.push_back({"Dev Mode", [this]() { devMenu(); }});
+            localOptions.push_back({tr("Dev Mode"), [this]() { devMenu(); }});
         }
 
-        localOptions.push_back({"About", showDeviceInfo});
-        localOptions.push_back({"Main Menu", []() {}});
+        localOptions.push_back({tr("About"), showDeviceInfo});
+        localOptions.push_back({tr("Main Menu"), []() {}});
 
-        int selected = loopOptions(localOptions, MENU_TYPE_SUBMENU, "Config");
+        int selected = loopOptions(localOptions, MENU_TYPE_SUBMENU, tr("Config"));
 
         // Exit to Main Menu only if user pressed Back
         if (selected == -1 || selected == localOptions.size() - 1) { return; }
@@ -59,15 +60,15 @@ void ConfigMenu::optionsMenu() {
 void ConfigMenu::displayUIMenu() {
     while (true) {
         std::vector<Option> localOptions = {
-            {"Brightness",  [this]() { setBrightnessMenu(); }               },
-            {"Dim Time",    [this]() { setDimmerTimeMenu(); }               },
-            {"Orientation", [this]() { lambdaHelper(gsetRotation, true)(); }},
-            {"UI Color",    [this]() { setUIColor(); }                      },
-            {"UI Theme",    [this]() { setTheme(); }                        },
-            {"Back",        []() {}                                         },
+            {tr("Brightness"),  [this]() { setBrightnessMenu(); }               },
+            {tr("Dim Time"),    [this]() { setDimmerTimeMenu(); }               },
+            {tr("Orientation"), [this]() { lambdaHelper(gsetRotation, true)(); }},
+            {tr("UI Color"),    [this]() { setUIColor(); }                      },
+            {tr("UI Theme"),    [this]() { setTheme(); }                        },
+            {tr("Back"),        []() {}                                         },
         };
 
-        int selected = loopOptions(localOptions, MENU_TYPE_SUBMENU, "Display & UI");
+        int selected = loopOptions(localOptions, MENU_TYPE_SUBMENU, tr("Display & UI"));
 
         // Exit only if user pressed Back or ESC
         if (selected == -1 || selected == localOptions.size() - 1) { return; }
@@ -83,17 +84,17 @@ void ConfigMenu::displayUIMenu() {
 void ConfigMenu::ledMenu() {
     while (true) {
         std::vector<Option> localOptions = {
-            {"LED Color",
+            {tr("LED Color"),
              [this]() {
                  beginLed();
                  setLedColorConfig();
              }                                                                            },
-            {"LED Effect",
+            {tr("LED Effect"),
              [this]() {
                  beginLed();
                  setLedEffectConfig();
              }                                                                            },
-            {"LED Brightness",
+            {tr("LED Brightness"),
              [this]() {
                  beginLed();
                  setLedBrightnessConfig();
@@ -104,10 +105,10 @@ void ConfigMenu::ledMenu() {
                  bruceConfig.ledBlinkEnabled = !bruceConfig.ledBlinkEnabled;
                  bruceConfig.saveFile();
              }                                                                            },
-            {"Back",                                                               []() {}},
+            {tr("Back"),                                                               []() {}},
         };
 
-        int selected = loopOptions(localOptions, MENU_TYPE_SUBMENU, "LED Config");
+        int selected = loopOptions(localOptions, MENU_TYPE_SUBMENU, tr("LED Config"));
 
         // Exit only if user pressed Back or ESC
         if (selected == -1 || selected == localOptions.size() - 1) { return; }
@@ -132,14 +133,14 @@ void ConfigMenu::audioMenu() {
                  bruceConfig.saveFile();
              }                                                                                                                                            },
 #if defined(HAS_NS4168_SPKR)
-            {"Sound Volume",                                                [this]() { setSoundVolume(); }},
+            {tr("Sound Volume"),                                                [this]() { setSoundVolume(); }},
 #endif  // BUZZ_PIN || HAS_NS4168_SPKR
 #endif  //  HAS_NS4168_SPKR
 #endif  //  LITE_VERSION
-            {"Back",                                                        []() {}                       },
+            {tr("Back"),                                                        []() {}                       },
         };
 
-        int selected = loopOptions(localOptions, MENU_TYPE_SUBMENU, "Audio Config");
+        int selected = loopOptions(localOptions, MENU_TYPE_SUBMENU, tr("Audio Config"));
 
         // Exit only if user pressed Back or ESC
         if (selected == -1 || selected == localOptions.size() - 1) { return; }
@@ -166,14 +167,14 @@ void ConfigMenu::systemMenu() {
                  bruceConfig.wifiAtStartup = !bruceConfig.wifiAtStartup;
                  bruceConfig.saveFile();
              }                                                                                                           },
-            {"Startup App",                                                         [this]() { setStartupApp(); }        },
-            {"Hide/Show Apps",                                                      [this]() { mainMenu.hideAppsMenu(); }},
-            {"Clock",                                                               [this]() { setClock(); }             },
-            {"Advanced",                                                            [this]() { advancedMenu(); }         },
-            {"Back",                                                                []() {}                              },
+            {tr("Startup App"),                                                         [this]() { setStartupApp(); }        },
+            {tr("Hide/Show Apps"),                                                      [this]() { mainMenu.hideAppsMenu(); }},
+            {tr("Clock"),                                                               [this]() { setClock(); }             },
+            {tr("Advanced"),                                                            [this]() { advancedMenu(); }         },
+            {tr("Back"),                                                                []() {}                              },
         };
 
-        int selected = loopOptions(localOptions, MENU_TYPE_SUBMENU, "System Config");
+        int selected = loopOptions(localOptions, MENU_TYPE_SUBMENU, tr("System Config"));
 
         // Exit only if user pressed Back or ESC
         if (selected == -1 || selected == localOptions.size() - 1) { return; }
@@ -189,11 +190,11 @@ void ConfigMenu::advancedMenu() {
     while (true) {
         std::vector<Option> localOptions = {
 #if !defined(LITE_VERSION)
-            {"Toggle BLE API", [this]() { enableBLEAPI(); }       },
-            {"BadUSB/BLE",     [this]() { setBadUSBBLEMenu(); }   },
+            {tr("Toggle BLE API"), [this]() { enableBLEAPI(); }       },
+            {tr("BadUSB/BLE"),     [this]() { setBadUSBBLEMenu(); }   },
 #endif
-            {"Network Creds",  [this]() { setNetworkCredsMenu(); }},
-            {"Factory Reset",
+            {tr("Network Creds"),  [this]() { setNetworkCredsMenu(); }},
+            {tr("Factory Reset"),
                                       []() {
                  // Confirmation dialog for destructive action
                  drawMainBorder(true);
@@ -212,10 +213,10 @@ void ConfigMenu::advancedMenu() {
                  }
                  // If cancelled, loop continues and menu rebuilds
              }                                                                             },
-            {"Back",           []() {}                            },
+            {tr("Back"),           []() {}                            },
         };
 
-        int selected = loopOptions(localOptions, MENU_TYPE_SUBMENU, "Advanced");
+        int selected = loopOptions(localOptions, MENU_TYPE_SUBMENU, tr("Advanced"));
 
         // Exit to System Config menu
         if (selected == -1 || selected == localOptions.size() - 1) { return; }
@@ -229,10 +230,10 @@ void ConfigMenu::advancedMenu() {
 void ConfigMenu::powerMenu() {
     while (true) {
         std::vector<Option> localOptions = {
-            {"Deep Sleep", goToDeepSleep          },
-            {"Sleep",      setSleepMode           },
-            {"Restart",    []() { ESP.restart(); }},
-            {"Power Off",
+            {tr("Deep Sleep"), goToDeepSleep          },
+            {tr("Sleep"),      setSleepMode           },
+            {tr("Restart"),    []() { ESP.restart(); }},
+            {tr("Power Off"),
              []() {
                  // Confirmation dialog for power off
                  drawMainBorder(true);
@@ -240,10 +241,10 @@ void ConfigMenu::powerMenu() {
 
                  if (choice == 1) { powerOff(); }
              }                                    },
-            {"Back",       []() {}                },
+            {tr("Back"),       []() {}                },
         };
 
-        int selected = loopOptions(localOptions, MENU_TYPE_SUBMENU, "Power Menu");
+        int selected = loopOptions(localOptions, MENU_TYPE_SUBMENU, tr("Power Menu"));
 
         // Exit to Config menu
         if (selected == -1 || selected == localOptions.size() - 1) { return; }
@@ -258,24 +259,24 @@ void ConfigMenu::powerMenu() {
 void ConfigMenu::devMenu() {
     while (true) {
         std::vector<Option> localOptions = {
-            {"I2C Finder",      [this]() { find_i2c_addresses(); }                      },
-            {"CC1101 Pins",     [this]() { setSPIPinsMenu(bruceConfigPins.CC1101_bus); }},
-            {"NRF24  Pins",     [this]() { setSPIPinsMenu(bruceConfigPins.NRF24_bus); } },
+            {tr("I2C Finder"),      [this]() { find_i2c_addresses(); }                      },
+            {tr("CC1101 Pins"),     [this]() { setSPIPinsMenu(bruceConfigPins.CC1101_bus); }},
+            {tr("NRF24  Pins"),     [this]() { setSPIPinsMenu(bruceConfigPins.NRF24_bus); } },
 #if !defined(LITE_VERSION)
-            {"LoRa Pins",       [this]() { setSPIPinsMenu(bruceConfigPins.LoRa_bus); }  },
-            {"W5500 Pins",      [this]() { setSPIPinsMenu(bruceConfigPins.W5500_bus); } },
+            {tr("LoRa Pins"),       [this]() { setSPIPinsMenu(bruceConfigPins.LoRa_bus); }  },
+            {tr("W5500 Pins"),      [this]() { setSPIPinsMenu(bruceConfigPins.W5500_bus); } },
 #endif
-            {"SDCard Pins",     [this]() { setSPIPinsMenu(bruceConfigPins.SDCARD_bus); }},
-            {"I2C Pins",        [this]() { setI2CPinsMenu(bruceConfigPins.i2c_bus); }   },
-            {"UART Pins",       [this]() { setUARTPinsMenu(bruceConfigPins.uart_bus); } },
-            {"GPS Pins",        [this]() { setUARTPinsMenu(bruceConfigPins.gps_bus); }  },
-            {"Serial USB",      [this]() { switchToUSBSerial(); }                       },
-            {"Serial UART",     [this]() { switchToUARTSerial(); }                      },
-            {"Disable DevMode", [this]() { bruceConfig.setDevMode(false); }             },
-            {"Back",            []() {}                                                 },
+            {tr("SDCard Pins"),     [this]() { setSPIPinsMenu(bruceConfigPins.SDCARD_bus); }},
+            {tr("I2C Pins"),        [this]() { setI2CPinsMenu(bruceConfigPins.i2c_bus); }   },
+            {tr("UART Pins"),       [this]() { setUARTPinsMenu(bruceConfigPins.uart_bus); } },
+            {tr("GPS Pins"),        [this]() { setUARTPinsMenu(bruceConfigPins.gps_bus); }  },
+            {tr("Serial USB"),      [this]() { switchToUSBSerial(); }                       },
+            {tr("Serial UART"),     [this]() { switchToUARTSerial(); }                      },
+            {tr("Disable DevMode"), [this]() { bruceConfig.setDevMode(false); }             },
+            {tr("Back"),            []() {}                                                 },
         };
 
-        int selected = loopOptions(localOptions, MENU_TYPE_SUBMENU, "Dev Mode");
+        int selected = loopOptions(localOptions, MENU_TYPE_SUBMENU, tr("Dev Mode"));
 
         // Check if "Disable DevMode" was pressed (second-to-last option)
         if (selected == localOptions.size() - 2) {

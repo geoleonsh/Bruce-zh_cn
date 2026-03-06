@@ -1,4 +1,5 @@
 #include "EthernetMenu.h"
+#include "core/i18n/zh_CN.h"
 #if !defined(LITE_VERSION)
 #include "core/display.h"
 #include "core/settings.h"
@@ -11,7 +12,7 @@
 void EthernetMenu::start_ethernet() {
     eth = new EthernetHelper();
     if (!eth->setup()) {
-        displayError("W5500 not found");
+        displayError(tr("W5500 not found"));
         delete eth;
         eth = nullptr;
         return;
@@ -21,33 +22,33 @@ void EthernetMenu::start_ethernet() {
 
 void EthernetMenu::optionsMenu() {
     options = {
-        {"Scan Hosts",
+        {tr("Scan Hosts"),
          [this]() {
              start_ethernet();
              if (eth != nullptr) {
                  run_arp_scanner();
                  eth->stop();
              } else {
-                    displayError("W5500 not found");
+                    displayError(tr("W5500 not found"));
              }
          }                        },
-        {"DHCP Starvation",
+        {tr("DHCP Starvation"),
          [this]() {
              start_ethernet();
              if (eth != nullptr) {
                  DHCPStarvation();
                  eth->stop();
              } else {
-                    displayError("W5500 not found");
+                    displayError(tr("W5500 not found"));
              }
          }                        },
-        {"MAC Flooding",    [this]() {
+        {tr("MAC Flooding"),    [this]() {
              start_ethernet();
              if (eth != nullptr) {
                  MACFlooding();
                  eth->stop();
              } else {
-                    displayError("W5500 not found");
+                    displayError(tr("W5500 not found"));
              }
          }}
     };
@@ -55,7 +56,7 @@ void EthernetMenu::optionsMenu() {
 
     delay(200);
 
-    loopOptions(options, MENU_TYPE_SUBMENU, "Ethernet");
+    loopOptions(options, MENU_TYPE_SUBMENU, tr("Ethernet"));
 }
 
 void EthernetMenu::drawIcon(float scale) {

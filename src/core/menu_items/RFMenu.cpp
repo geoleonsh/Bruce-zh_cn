@@ -1,4 +1,5 @@
 #include "RFMenu.h"
+#include "core/i18n/zh_CN.h"
 #include "core/display.h"
 #include "core/settings.h"
 #include "core/utils.h"
@@ -13,24 +14,24 @@
 
 void RFMenu::optionsMenu() {
     options = {
-        {"Scan/copy",       [=]() { RFScan(); }       },
+        {tr("Scan/copy"),       [=]() { RFScan(); }       },
 #if !defined(LITE_VERSION)
-        {"Record RAW",      rf_raw_record             }, // Pablo-Ortiz-Lopez
-        {"Custom SubGhz",   sendCustomRF              },
+        {tr("Record RAW"),      rf_raw_record             }, // Pablo-Ortiz-Lopez
+        {tr("Custom SubGhz"),   sendCustomRF              },
 #endif
-        {"Spectrum",        rf_spectrum               },
+        {tr("Spectrum"),        rf_spectrum               },
 #if !defined(LITE_VERSION)
-        {"RSSI Spectrum",   rf_CC1101_rssi            }, // @Pirata
-        {"SquareWave Spec", rf_SquareWave             }, // @Pirata
-        {"Spectogram",      rf_waterfall              }, // dev_eclipse
+        {tr("RSSI Spectrum"),   rf_CC1101_rssi            }, // @Pirata
+        {tr("SquareWave Spec"), rf_SquareWave             }, // @Pirata
+        {tr("Spectogram"),      rf_waterfall              }, // dev_eclipse
 #if defined(BUZZ_PIN) or defined(HAS_NS4168_SPKR) and defined(RF_LISTEN_H)
-        {"Listen",          rf_listen                 }, // dev_eclipse
+        {tr("Listen"),          rf_listen                 }, // dev_eclipse
 #endif
-        {"Bruteforce",      rf_bruteforce             }, // dev_eclipse
-        {"Jammer Itmt",     [=]() { RFJammer(false); }},
+        {tr("Bruteforce"),      rf_bruteforce             }, // dev_eclipse
+        {tr("Jammer Itmt"),     [=]() { RFJammer(false); }},
 #endif
-        {"Jammer Full",     [=]() { RFJammer(true); } },
-        {"Config",          [this]() { configMenu(); }},
+        {tr("Jammer Full"),     [=]() { RFJammer(true); } },
+        {tr("Config"),          [this]() { configMenu(); }},
     };
     addOptionToMainMenu();
 
@@ -44,14 +45,14 @@ void RFMenu::optionsMenu() {
 
 void RFMenu::configMenu() {
     options = {
-        {"RF TX Pin", lambdaHelper(gsetRfTxPin, true)},
-        {"RF RX Pin", lambdaHelper(gsetRfRxPin, true)},
-        {"RF Module", setRFModuleMenu},
-        {"RF Frequency", setRFFreqMenu},
-        {"Back", [this]() { optionsMenu(); }},
+        {tr("RF TX Pin"), lambdaHelper(gsetRfTxPin, true)},
+        {tr("RF RX Pin"), lambdaHelper(gsetRfRxPin, true)},
+        {tr("RF Module"), setRFModuleMenu},
+        {tr("RF Frequency"), setRFFreqMenu},
+        {tr("Back"), [this]() { optionsMenu(); }},
     };
 
-    loopOptions(options, MENU_TYPE_SUBMENU, "RF Config");
+    loopOptions(options, MENU_TYPE_SUBMENU, tr("RF Config"));
 }
 
 void RFMenu::drawIcon(float scale) {

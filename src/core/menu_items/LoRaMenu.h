@@ -2,6 +2,7 @@
 #define __LORA_MENU_H__
 #if !defined(LITE_VERSION)
 #include <MenuItemInterface.h>
+#include "core/i18n/zh_CN.h"
 
 void lorachat();
 void changeusername();

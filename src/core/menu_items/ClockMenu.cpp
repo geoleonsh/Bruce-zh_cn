@@ -1,4 +1,5 @@
 #include "ClockMenu.h"
+#include "core/i18n/zh_CN.h"
 #include "core/display.h"
 #include "core/settings.h"
 #include "modules/others/timer.h"
@@ -20,9 +21,9 @@ void ClockMenu::optionsMenu() {
 
 void ClockMenu::showSubMenu() {
     options = {
-        {"Timer",         [=]() { Timer(); }            },
-        {"Back to Clock", [=]() {}                      },
-        {"Exit",          [=]() { returnToMenu = true; }}
+        {tr("Timer"),         [=]() { Timer(); }            },
+        {tr("Back to Clock"), [=]() {}                      },
+        {tr("Exit"),          [=]() { returnToMenu = true; }}
         // Add more options here
     };
 

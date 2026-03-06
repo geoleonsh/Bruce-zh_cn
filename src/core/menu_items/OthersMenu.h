@@ -2,11 +2,12 @@
 #define __OTHERS_MENU_H__
 
 #include "MenuItemInterface.h"
+#include "core/i18n/zh_CN.h"
 
 class OthersMenu : public MenuItemInterface {
 
 public:
-    OthersMenu() : MenuItemInterface("Others") {}
+    OthersMenu() : MenuItemInterface("其他") {}
 
     void micMenu();
     void badUsbHidMenu(); // New submenu for BadUSB & HID tools

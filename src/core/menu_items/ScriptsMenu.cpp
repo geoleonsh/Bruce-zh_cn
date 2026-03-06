@@ -1,4 +1,5 @@
 #include "ScriptsMenu.h"
+#include "core/i18n/zh_CN.h"
 #include "core/display.h"
 #include "core/settings.h"
 #include "core/utils.h"
@@ -15,10 +16,10 @@ void ScriptsMenu::optionsMenu() {
 
     options = getScriptsOptionsList("", false);
 
-    options.push_back({"Load...", run_bjs_script});
+    options.push_back({tr("Load..."), run_bjs_script});
     addOptionToMainMenu();
 
-    loopOptions(options, MENU_TYPE_SUBMENU, "Scripts");
+    loopOptions(options, MENU_TYPE_SUBMENU, tr("Scripts"));
 #endif
 }
 

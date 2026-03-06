@@ -1,4 +1,5 @@
 #include "ConnectMenu.h"
+#include "core/i18n/zh_CN.h"
 #include "core/connect/file_sharing.h"
 #include "core/connect/serial_commands.h"
 #include "core/display.h"
@@ -9,11 +10,11 @@
 void ConnectMenu::optionsMenu() {
     options = {
 #ifndef LITE_VERSION
-        {"Send File", [=]() { FileSharing().sendFile(); }        },
-        {"Recv File", [=]() { FileSharing().receiveFile(); }     },
+        {tr("Send File"), [=]() { FileSharing().sendFile(); }        },
+        {tr("Recv File"), [=]() { FileSharing().receiveFile(); }     },
 
-        {"Send Cmds", [=]() { EspSerialCmd().sendCommands(); }   },
-        {"Recv Cmds", [=]() { EspSerialCmd().receiveCommands(); }},
+        {tr("Send Cmds"), [=]() { EspSerialCmd().sendCommands(); }   },
+        {tr("Recv Cmds"), [=]() { EspSerialCmd().receiveCommands(); }},
 #endif
     };
     addOptionToMainMenu();

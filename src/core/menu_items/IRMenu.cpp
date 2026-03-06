@@ -1,4 +1,5 @@
 #include "IRMenu.h"
+#include "core/i18n/zh_CN.h"
 #include "core/display.h"
 #include "core/settings.h"
 #include "core/utils.h"
@@ -13,13 +14,13 @@ void IRMenu::optionsMenu() {
     M5.Power.setExtOutput(true); // ENABLE 5V OUTPUT
 #endif
     options = {
-        {"TV-B-Gone", StartTvBGone              },
-        {"Custom IR", otherIRcodes              },
-        {"IR Read",   [=]() { IrRead(); }       },
+        {tr("TV-B-Gone"), StartTvBGone              },
+        {tr("Custom IR"), otherIRcodes              },
+        {tr("IR Read"),   [=]() { IrRead(); }       },
 #if !defined(LITE_VERSION)
-        {"IR Jammer", startIrJammer             }, // Simple frequency-adjustable jammer
+        {tr("IR Jammer"), startIrJammer             }, // Simple frequency-adjustable jammer
 #endif
-        {"Config",    [this]() { configMenu(); }},
+        {tr("Config"),    [this]() { configMenu(); }},
     };
     addOptionToMainMenu();
 
@@ -34,13 +35,13 @@ void IRMenu::optionsMenu() {
 
 void IRMenu::configMenu() {
     options = {
-        {"Ir TX Pin", lambdaHelper(gsetIrTxPin, true)},
-        {"Ir RX Pin", lambdaHelper(gsetIrRxPin, true)},
-        {"Ir TX Repeats", setIrTxRepeats},
-        {"Back", [this]() { optionsMenu(); }},
+        {tr("Ir TX Pin"), lambdaHelper(gsetIrTxPin, true)},
+        {tr("Ir RX Pin"), lambdaHelper(gsetIrRxPin, true)},
+        {tr("Ir TX Repeats"), setIrTxRepeats},
+        {tr("Back"), [this]() { optionsMenu(); }},
     };
 
-    loopOptions(options, MENU_TYPE_SUBMENU, "IR Config");
+    loopOptions(options, MENU_TYPE_SUBMENU, tr("IR Config"));
 }
 
 void IRMenu::drawIcon(float scale) {

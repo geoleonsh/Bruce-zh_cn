@@ -1,4 +1,5 @@
 #include "main_menu.h"
+#include "core/i18n/zh_CN.h"
 #include "display.h"
 #include "utils.h"
 #include <globals.h>
@@ -69,7 +70,7 @@ void MainMenu::begin(void) {
             );
         }
     }
-    _currentIndex = loopOptions(options, MENU_TYPE_MAIN, "Main Menu", _currentIndex);
+    _currentIndex = loopOptions(options, MENU_TYPE_MAIN, tr("Main Menu"), _currentIndex);
 };
 
 /*********************************************************************
@@ -87,7 +88,7 @@ RESTART: // using gotos to avoid stackoverflow after many choices
         bool enabled = find(l.begin(), l.end(), label) == l.end();
         options.push_back({label, [this, label]() { bruceConfig.addDisabledMenu(label); }, enabled});
     }
-    options.push_back({"Show All", [=]() { bruceConfig.disabledMenus.clear(); }, true});
+    options.push_back({tr("Show All"), [=]() { bruceConfig.disabledMenus.clear(); }, true});
     addOptionToMainMenu();
     loopOptions(options);
     bruceConfig.saveFile();

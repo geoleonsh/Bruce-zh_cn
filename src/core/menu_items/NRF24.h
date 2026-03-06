@@ -2,6 +2,7 @@
 #define __NRF24_MENU_H__
 
 #include <MenuItemInterface.h>
+#include "core/i18n/zh_CN.h"
 
 class NRF24Menu : public MenuItemInterface {
 public:

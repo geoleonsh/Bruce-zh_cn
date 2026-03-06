@@ -1,14 +1,15 @@
 #if !defined(LITE_VERSION)
 #include "LoRaMenu.h"
+#include "core/i18n/zh_CN.h"
 #include "core/display.h"
 #include "core/utils.h"
 #include "modules/lora/LoRaRF.h"
 
 void LoRaMenu::optionsMenu() {
     options = {
-        {"Chat",             []() { lorachat(); }      },
-        {"Change username",  []() { changeusername(); }},
-        {"Change Frequency", []() { chfreq(); }        },
+        {tr("Chat"),             []() { lorachat(); }      },
+        {tr("Change username"),  []() { changeusername(); }},
+        {tr("Change Frequency"), []() { chfreq(); }        },
     };
     addOptionToMainMenu();
     String txt = "LoRa";

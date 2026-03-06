@@ -1,4 +1,5 @@
 #include "FileMenu.h"
+#include "core/i18n/zh_CN.h"
 #include "core/display.h"
 #include "core/massStorage.h"
 #include "core/sd_functions.h"
@@ -7,16 +8,16 @@
 
 void FileMenu::optionsMenu() {
     options.clear();
-    if (setupSdCard()) options.push_back({"SD Card", [=]() { loopSD(SD); }});
-    options.push_back({"LittleFS", [=]() { loopSD(LittleFS); }});
-    options.push_back({"WebUI", loopOptionsWebUi});
+    if (setupSdCard()) options.push_back({tr("SD Card"), [=]() { loopSD(SD); }});
+    options.push_back({tr("LittleFS"), [=]() { loopSD(LittleFS); }});
+    options.push_back({tr("WebUI"), loopOptionsWebUi});
 
 #if defined(SOC_USB_OTG_SUPPORTED)
-    options.push_back({"Mass Storage", [=]() { MassStorage(); }});
+    options.push_back({tr("Mass Storage"), [=]() { MassStorage(); }});
 #endif
     addOptionToMainMenu();
 
-    loopOptions(options, MENU_TYPE_SUBMENU, "Files");
+    loopOptions(options, MENU_TYPE_SUBMENU, tr("Files"));
 }
 void FileMenu::drawIcon(float scale) {
     clearIconArea();

@@ -1,4 +1,5 @@
 #include "GpsMenu.h"
+#include "core/i18n/zh_CN.h"
 #include "core/display.h"
 #include "core/settings.h"
 #include "core/utils.h"
@@ -8,11 +9,11 @@
 
 void GpsMenu::optionsMenu() {
     options = {
-        {"Wardriving",  [this]() { wardrivingMenu(); }},
+        {tr("Wardriving"),  [this]() { wardrivingMenu(); }},
 #if !defined(LITE_VERSION)
-        {"GPS Tracker", [=]() { GPSTracker(); }       },
+        {tr("GPS Tracker"), [=]() { GPSTracker(); }       },
 #endif
-        {"Config",      [this]() { configMenu(); }    },
+        {tr("Config"),      [this]() { configMenu(); }    },
     };
     addOptionToMainMenu();
 
@@ -22,22 +23,22 @@ void GpsMenu::optionsMenu() {
 
 void GpsMenu::wardrivingMenu() {
     options = {
-        {"Scan WiFi Networks", []() { Wardriving(true, false); }},
-        {"Scan BLE Devices",   []() { Wardriving(false, true); }},
-        {"Scan Both",          []() { Wardriving(true, true); } },
-        {"Back",               [this]() { optionsMenu(); }      },
+        {tr("Scan WiFi Networks"), []() { Wardriving(true, false); }},
+        {tr("Scan BLE Devices"),   []() { Wardriving(false, true); }},
+        {tr("Scan Both"),          []() { Wardriving(true, true); } },
+        {tr("Back"),               [this]() { optionsMenu(); }      },
     };
 
-    loopOptions(options, MENU_TYPE_SUBMENU, "Wardriving");
+    loopOptions(options, MENU_TYPE_SUBMENU, tr("Wardriving"));
 }
 void GpsMenu::configMenu() {
     options = {
-        {"Baudrate", setGpsBaudrateMenu                                 },
-        {"GPS Pins", [=]() { setUARTPinsMenu(bruceConfigPins.gps_bus); }},
-        {"Back",     [this]() { optionsMenu(); }                        },
+        {tr("Baudrate"), setGpsBaudrateMenu                                 },
+        {tr("GPS Pins"), [=]() { setUARTPinsMenu(bruceConfigPins.gps_bus); }},
+        {tr("Back"),     [this]() { optionsMenu(); }                        },
     };
 
-    loopOptions(options, MENU_TYPE_SUBMENU, "GPS Config");
+    loopOptions(options, MENU_TYPE_SUBMENU, tr("GPS Config"));
 }
 
 void GpsMenu::drawIcon(float scale) {

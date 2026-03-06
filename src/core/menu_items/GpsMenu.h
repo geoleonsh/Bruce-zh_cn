@@ -2,10 +2,11 @@
 #define __GPS_MENU_H__
 
 #include <MenuItemInterface.h>
+#include "core/i18n/zh_CN.h"
 
 class GpsMenu : public MenuItemInterface {
 public:
-    GpsMenu() : MenuItemInterface("GPS") {}
+    GpsMenu() : MenuItemInterface("定位") {}
 
     void optionsMenu(void);
     void wardrivingMenu(void);
